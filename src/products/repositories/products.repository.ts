@@ -1,8 +1,17 @@
-import { Product } from '../entities/product.entity';
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 
-class ProductsRepository {
-  private products: Product[] = [];
-  save(product: Product) {
-    this.products.push(product);
+import { PrismaClient } from '@prisma/client';
+
+@Injectable()
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
+  async onModuleInit() {
+    await this.$connect();
+  }
+
+  async onModuleDestroy() {
+    await this.$disconnect();
   }
 }
